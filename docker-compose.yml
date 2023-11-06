@@ -14,6 +14,8 @@ services:
       - /app/node_modules
     depends_on:
       - rabbitmq
+    networks:
+      - consumer-network
   
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -27,3 +29,10 @@ services:
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - consumer-network
+
+networks:
+  consumer-network:
+    driver: bridge
+
