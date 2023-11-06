@@ -19,6 +19,7 @@ try {
   });
 } catch (error) {
   console.error(`Failed to connect to RabbitMQ: ${error}`);
+  await rabbitMQService.close();
   process.exit(1);
 }
 
