@@ -1,0 +1,14 @@
+{
+	"ignore":[
+		".git",
+		"node_modules/",
+		"dist/",
+		"coverage/"
+	],
+	"watch":[
+		"src/*",
+        "tests/*"
+	],
+	"ext": "js, json, ts",
+	"exec": "npm run build && npm run start"
+}
