@@ -14,7 +14,6 @@ try {
   await rabbitMQService.consume(queue, (message) => {
     if (message) {
       console.log(`Received message: ${message.content.toString()}`);
-      rabbitMQService.ack('email', message);
     }
   });
 } catch (error) {
@@ -23,4 +22,4 @@ try {
   process.exit(1);
 }
 
-console.log('Connected to RabbitMQ, waiting for messages...');
+// console.log('Connected to RabbitMQ, waiting for messages...');

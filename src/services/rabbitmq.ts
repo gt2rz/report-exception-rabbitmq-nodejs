@@ -18,24 +18,20 @@ export class RabbitMQService {
 
   async consume(queue: string, onMessage: (msg: ConsumeMessage | null) => void) {
     if (!this.channel) {
-      throw new Error('Channel is not initialized.');
+      throw new Error('Channel is not initialized or has been closed.');
+    }
+
+    if (!this.connection) {
+      throw new Error('Connection is not initialized.');
     }
 
     await this.channel.assertQueue(queue, { durable: true });
-    this.channel.consume(queue, onMessage);
-  }
-
-  async ack(queue: string, message: ConsumeMessage) {
-    if (!this.channel) {
-      throw new Error('Channel is not initialized.');
-    }
-
-    this.channel.ack(message);
+    await this.channel.consume(queue, onMessage);
   }
 
   async sendToQueue(queue: string, message: string) {
     if (!this.channel) {
-      throw new Error('Channel is not initialized.');
+      throw new Error('Channel is not initialized or has been closed.');
     }
 
     await this.channel.assertQueue(queue, { durable: true });
