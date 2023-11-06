@@ -6,6 +6,20 @@ dotenv.config();
 const rabbitMQStringConnection = `amqp://${process.env.RABBITMQ_USERNAME}:${process.env.RABBITMQ_PASSWORD}@${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`;
 const rabbitMQService = new RabbitMQService(rabbitMQStringConnection);
 
-await rabbitMQService.connect();
+try {
+  await rabbitMQService.connect();
 
-console.log('Connected to RabbitMQ');
+  const queue = process.env.RABBITMQ_QUEUE_NAME || 'default';
+
+  await rabbitMQService.consume(queue, (message) => {
+    if (message) {
+      console.log(`Received message: ${message.content.toString()}`);
+      rabbitMQService.ack('email', message);
+    }
+  });
+} catch (error) {
+  console.error(`Failed to connect to RabbitMQ: ${error}`);
+  process.exit(1);
+}
+
+console.log('Connected to RabbitMQ, waiting for messages...');
