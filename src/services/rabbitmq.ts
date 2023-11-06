@@ -4,7 +4,7 @@ export class RabbitMQService {
   private connection: Connection | null = null;
   private channel: Channel | null = null;
 
-  // constructor(private url: string) {}
+  constructor(private url: string) {}
 
   async connect() {
     try {
