@@ -66,6 +66,6 @@ describe('RabbitMQService', () => {
   it('should throw an error if connection is not initialized when send to queue', async () => {
     await service.connect();
     service['channel'] = null;
-    await expect(service.sendToQueue('test-queue', 'this is a message')).rejects.toThrow('Channel is not initialized or has been closed.');
+    await expect(service.sendToQueue('test-queue', 'this is a message')).rejects.toThrow('Channel is not initialized or has been cloed.');
   });
 });
