@@ -22,9 +22,11 @@ COPY --from=cache /app/node_modules /app/node_modules
 EXPOSE ${PORT}
 CMD ["npm", "start"]
 
-FROM build as development
+FROM node:${NODE_VERSION} as development
 ENV NODE_ENV=development
 WORKDIR /app
-RUN npm install --only=development
+COPY package*.json /app/
+RUN npm install
+COPY . /app
 EXPOSE ${PORT}
 CMD ["npm", "run", "dev"]
