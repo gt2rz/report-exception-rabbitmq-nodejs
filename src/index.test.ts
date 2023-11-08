@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import dotenv from 'dotenv';
-import { RabbitMQService } from './services/rabbitmq.js';
-import { ElasticsearchService } from './services/elasticsearch.js';
+import { RabbitMQService } from './services/rabbitmq';
+import { ElasticsearchService } from './services/elasticsearch';
 
 dotenv.config();
 

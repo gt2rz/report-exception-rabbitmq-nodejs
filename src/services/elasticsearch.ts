@@ -27,11 +27,13 @@ export class ElasticsearchService {
         body: data,
       });
 
-      if (response.statusCode === 200) {
-        console.log('Data saved successfully');
-      } else {
-        console.log('Failed to save data');
-      }
+      console.log('Data saved successfully');
+
+      // if (response?.statusCode === 200) {
+      //   console.log('Data saved successfully');
+      // } else {
+      //   console.log('Failed to save data');
+      // }
     } catch (error) {
       console.error(`Failed to save data: ${error}`);
     }
