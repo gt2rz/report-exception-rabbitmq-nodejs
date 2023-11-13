@@ -14,7 +14,7 @@ services:
       - /app/node_modules
     depends_on:
       - rabbitmq
-      # - elasticsearch
+      - elasticsearch
     networks:
       - consumer-network
   
@@ -33,38 +33,59 @@ services:
     networks:
       - consumer-network
 
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
-  #   container_name: 'elasticsearch'
-  #   ports:
-  #     - 9200:9200
-  #   environment:
-  #     - discovery.type=single-node
-  #     - bootstrap.memory_lock=true
-  #     - ES_JAVA_OPTS=-Xms512m -Xmx512m
-  #     - ELASTIC_USERNAME=YourUsername
-  #     - ELASTIC_PASSWORD=YourPassword
-  #   networks:
-  #     - consumer-network
-  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    volumes:
+      - data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=123456789
+      - ELASTIC_USERNAME=elastic
+      - xpack.security.enabled=true
+    mem_limit: 1024M
+    networks:
+      - consumer-network
+
   # kibana:
-  #   image: docker.elastic.co/kibana/kibana:8.10.4
-  #   container_name: 'kibana'
+  #   container_name: kb-container
+  #   image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+  #   volumes:
+  #     - kibanadata:/usr/share/kibana/data
   #   ports:
   #     - 5601:5601
   #   environment:
-  #     - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-  #     - XPACK_SECURITY_ENABLED=false
-  #     - ELASTICSEARCH_USERNAME=YourUsername
-  #     - ELASTICSEARCH_PASSWORD=YourPassword
+  #     - ELASTICSEARCH_HOSTS=http://192.168.208.2:9200
+  #     - xpack.security.enabled=false
   #   networks:
   #     - consumer-network
-  #   depends_on:
-  #     - elasticsearch
 
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   container_name: 'prometheus'
+  #   ports:
+  #     - 9090:9090
+  #   volumes:
+  #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  #   networks:
+  #     - consumer-network
+
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   container_name: 'grafana'
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - consumer-network
   
-
 networks:
   consumer-network:
     driver: bridge
 
+volumes:
+  data:
+    driver: local
+  # kibanadata:
+  #   driver: local

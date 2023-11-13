@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import dotenv from 'dotenv';
-import { RabbitMQService } from './services/rabbitmq';
-import { ElasticsearchService } from './services/elasticsearch';
+import { RabbitMQService } from './services/rabbitmq.js';
+import { ElasticsearchService } from './services/elasticsearch.js';
 
 dotenv.config();
 
@@ -9,8 +9,7 @@ describe('Index', () => {
   const rabbitMQStringConnection = `amqp://${process.env.RABBITMQ_USERNAME}:${process.env.RABBITMQ_PASSWORD}@${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`;
   const rabbitMQService = new RabbitMQService(rabbitMQStringConnection);
 
-  const nodeElasticSearch = process.env.ELASTICSEARCH_HOSTS || 'http://localhost:9200';
-  const elasticsearchService = new ElasticsearchService(nodeElasticSearch);
+  const elasticsearchService = new ElasticsearchService();
   const elasticSearchIndex = process.env.ELASTICSEARCH_INDEX || 'default';
 
   beforeEach(async () => {

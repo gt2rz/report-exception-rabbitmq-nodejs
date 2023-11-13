@@ -7,8 +7,7 @@ dotenv.config();
 const rabbitMQStringConnection = `amqp://${process.env.RABBITMQ_USERNAME}:${process.env.RABBITMQ_PASSWORD}@${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`;
 const rabbitMQService = new RabbitMQService(rabbitMQStringConnection);
 
-const nodeElasticSearch = process.env.ELASTICSEARCH_HOSTS || 'http://localhost:9200';
-const elasticsearchService = new ElasticsearchService(nodeElasticSearch);
+const elasticsearchService = new ElasticsearchService();
 const elasticSearchIndex = process.env.ELASTICSEARCH_INDEX || 'default';
 
 try {
@@ -18,7 +17,7 @@ try {
 
   await rabbitMQService.consume(queue, async (message) => {
     if (message) {
-      // console.log(`Received message: ${message.content.toString()}`);
+      console.log(`Received message: ${message.content.toString()}`);
       await elasticsearchService.save(elasticSearchIndex, message.content.toString());
     }
   });
