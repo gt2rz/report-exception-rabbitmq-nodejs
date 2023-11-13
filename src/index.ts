@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { RabbitMQService } from './services/rabbitmq.js';
 import { ElasticsearchService } from './services/elasticsearch.js';
+import { trazabilityMiddleware } from './middlewares/trazability.js';
 
 dotenv.config();
 
@@ -18,7 +19,10 @@ try {
   await rabbitMQService.consume(queue, async (message) => {
     if (message) {
       console.log(`Received message: ${message.content.toString()}`);
-      await elasticsearchService.save(elasticSearchIndex, message.content.toString());
+
+      await trazabilityMiddleware(message.content.toString(), async (messageProcessed: any) => {
+        await elasticsearchService.save(elasticSearchIndex, messageProcessed);
+      });
     }
   });
 } catch (error) {
