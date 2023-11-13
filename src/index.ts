@@ -8,7 +8,7 @@ const rabbitMQStringConnection = `amqp://${process.env.RABBITMQ_USERNAME}:${proc
 const rabbitMQService = new RabbitMQService(rabbitMQStringConnection);
 
 const elasticsearchService = new ElasticsearchService();
-const elasticSearchIndex = process.env.ELASTICSEARCH_INDEX || 'default';
+const elasticSearchIndex = process.env.ELASTIC_REPORT_EXCEPTION_INDEX || 'default';
 
 try {
   await rabbitMQService.connect();

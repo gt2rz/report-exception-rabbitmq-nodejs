@@ -13,7 +13,7 @@ export class ElasticsearchService {
    */
   constructor() {
     this.client = new Client({
-      node: process.env.ELASTICSEARCH_HOSTS || 'http://localhost:9200',
+      node: process.env.ELASTIC_HOSTS || 'http://localhost:9200',
       auth: {
         username: process.env.ELASTIC_USERNAME || 'elastic',
         password: process.env.ELASTIC_PASSWORD || '',
